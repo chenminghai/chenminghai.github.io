@@ -1,12 +1,6 @@
 # chenminghai.github.io
 个人博客：https://chenminghai.github.io
-
 ---
-title: about
-date: 2019-03-01 15:47:10
-type: about
----
-
 # 联系方式
 
 - 手机：15521441679
