@@ -1,0 +1,1848 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="数据库,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="JDBC基础知识什么是JDBC JDBC是一种用于执行SQL语句的Java API，它是由一组用Java语言编写的类和接口组成。它提供了一种操作数据库的标准。 JDBC的目标是使Java程序员使用JDBC可以连接任何提供了JDBC驱动程序的数据库系统  JDBC的机制：通过驱动包连接数据库，使用JDBC的API操作驱动包从而操作具体数据库 JDBC里面包含了数据库操作的规范类，接口，方法，但是JD">
+<meta name="keywords" content="数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JDBC学习笔记">
+<meta property="og:url" content="http://yoursite.com/2019/03/25/JDBC学习笔记/index.html">
+<meta property="og:site_name" content="金名海-个人博客">
+<meta property="og:description" content="JDBC基础知识什么是JDBC JDBC是一种用于执行SQL语句的Java API，它是由一组用Java语言编写的类和接口组成。它提供了一种操作数据库的标准。 JDBC的目标是使Java程序员使用JDBC可以连接任何提供了JDBC驱动程序的数据库系统  JDBC的机制：通过驱动包连接数据库，使用JDBC的API操作驱动包从而操作具体数据库 JDBC里面包含了数据库操作的规范类，接口，方法，但是JD">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-25T12:46:37.171Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JDBC学习笔记">
+<meta name="twitter:description" content="JDBC基础知识什么是JDBC JDBC是一种用于执行SQL语句的Java API，它是由一组用Java语言编写的类和接口组成。它提供了一种操作数据库的标准。 JDBC的目标是使Java程序员使用JDBC可以连接任何提供了JDBC驱动程序的数据库系统  JDBC的机制：通过驱动包连接数据库，使用JDBC的API操作驱动包从而操作具体数据库 JDBC里面包含了数据库操作的规范类，接口，方法，但是JD">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"输入关键字","hits_empty":"暂时找不到: ${query} 相关内容","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/25/JDBC学习笔记/">
+
+
+
+
+
+  <title>JDBC学习笔记 | 金名海-个人博客</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?66c86ae50bb120051d21ab340cae0673";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <!--在右上角或者左上角实现fork me on github-->
+	<a href="https://github.com/chenminghai" class="github-corner" aria-label="View source on GitHub">
+		<svg width="80" height="80" viewbox="0 0 250 250" style="fill:#FD6C6C; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+			<path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+			<path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+			<path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+		</svg>
+	</a>
+	<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+	</style>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">金名海-个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">村里的人都说我这人太老实了，我也是这么觉得的</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/25/JDBC学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="金名海">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/head.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="金名海-个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JDBC学习笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-25T17:23:23+08:00">
+                2019-03-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/25/JDBC学习笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/03/25/JDBC学习笔记/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/03/25/JDBC学习笔记/" class="leancloud_visitors" data-flag-title="JDBC学习笔记">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  7.3k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  28
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="JDBC基础知识"><a href="#JDBC基础知识" class="headerlink" title="JDBC基础知识"></a>JDBC基础知识</h1><h3 id="什么是JDBC"><a href="#什么是JDBC" class="headerlink" title="什么是JDBC"></a>什么是JDBC</h3><ul>
+<li>JDBC是一种用于执行SQL语句的Java API，它是由一组用Java语言编写的类和接口组成。它提供了一种操作数据库的标准。</li>
+<li>JDBC的目标是使Java程序员使用JDBC可以连接任何提供了JDBC驱动程序的数据库系统</li>
+</ul>
+<h3 id="JDBC的机制：通过驱动包连接数据库，使用JDBC的API操作驱动包从而操作具体数据库"><a href="#JDBC的机制：通过驱动包连接数据库，使用JDBC的API操作驱动包从而操作具体数据库" class="headerlink" title="JDBC的机制：通过驱动包连接数据库，使用JDBC的API操作驱动包从而操作具体数据库"></a>JDBC的机制：通过驱动包连接数据库，使用JDBC的API操作驱动包从而操作具体数据库</h3><ul>
+<li><p>JDBC里面包含了数据库操作的规范类，接口，方法，但是JDBC自己并没有具体实现这些规范。而是通过驱动包来实现。各大数据库厂商根据JDBC规范，自己去实现JDBC的API的具体细节，而这些实现的API称为驱动包，要连接那个数据库，就将该数据库的JDBC驱动包导入，然后通过JDBC的API去操控驱动包，从而去操控具体的特定的数据库。</p>
+</li>
+<li><p>JDBC的API是java.sql包，使用JDBC时，只需要导入这个包到程序里就行。</p>
+<pre><code>图示：![](http://ww1.sinaimg.cn/large/006dQ9gUgy1g1f6d4roo9j30fb0503yh.jpg)
+</code></pre></li>
+</ul>
+<h3 id="连接MySQL"><a href="#连接MySQL" class="headerlink" title="连接MySQL"></a>连接MySQL</h3><ul>
+<li><p>添加驱动：就是从Java程序连通到驱动包<br>   **在项目中创建lib并将MySQL的驱动包复制进来</p>
+<pre><code>**builder path 编译路径
+</code></pre></li>
+<li><p>创建连接：就是从驱动包连接到数据库</p>
+<ul>
+<li><p>A.加载驱动：把com.mysql.jdbc.Driver这份字节码加载进JVM，当该字节码加载进JVM时，就会执             行该字节码的静态代码块，该字节码的静态代码块会注册该驱动(看源码)<br>​                     Class.forName(“com.mysql.jdbc.Driver”);  //com.mysql.jdbc.Driver是驱动的名称</p>
+</li>
+<li><p>B.获取连接对象：即连接上数据库</p>
+<pre><code>**获取连接对象需要数据库的地址URL，数据库的用户名和密码,url的格式是jdbc:mysql://主机名:端口/数据库名**
+    String url=&quot;jdbc:mysql://localhost:3306/mytest&quot;; 
+    String user=&quot;root&quot;;
+    String password=&quot;1234&quot;;
+    Connection c=DriverManager.getConnection(url,user,password);
+</code></pre></li>
+<li><p>用Java程序操作MySQL创建表</p>
+<ul>
+<li>A.加载驱动：Class.forName(“com.mysql.jdbc.Driver”);   </li>
+<li>B.连接到数据库：Connection conn=DriverManager.getConnection(url,user,password);</li>
+<li>C.创建要执行的SQL语句<ul>
+<li>使用连接对象获取Statement对象，Statement接口是用来执行静态的SQL语句的。</li>
+<li>用Statement对象把SQL语句对象发送到数据库中执行，并返回执行结果：对于DQL语句返回查询结果集，对于DML语句返回受影响的行数，对于DDL返回0。<pre><code>例：
+    String sql=&quot;create table stu(id int,name varchar(25),age int)&quot;;
+    Statement st=conn.createStatement();
+</code></pre></li>
+</ul>
+</li>
+<li><p>D.执行SQL语句</p>
+<pre><code>DDL语句,DML语句使用Statement对象的：int execuUpdate(String sql) 方法
+DQL语句使用Statement对象的：ResultSet executeQuery(String sql)
+        例：
+            int row=st.executeUpdate(sql);
+</code></pre></li>
+<li><p>E.释放数据资源<br>   <strong>为什么要释放资源？</strong><br>   其实Connection连接就相当于Java到MySQL之间建立了管道，而Statement就是连接到MySQL的</p>
+<pre><code>执行引擎来执行sql语句。
+**要关闭那些资源？**
+                res.close();  //先关闭结果集，如果有的话
+                st.close();   //再关闭的是数据库到mysql.exe的管道
+                conn.close(); //最后关闭的是Java程序到Mysql服务器的管道                
+</code></pre></li>
+</ul>
+</li>
+<li><p>异常处理</p>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">        Class.forName(<span class="string">"com.mysql.jdbc.Driver"</span>);	</span><br><span class="line">        conn=DriverManager.getConnection(url,user,password);</span><br><span class="line">        <span class="comment">//执行DML语句</span></span><br><span class="line">        String sql=<span class="string">"insert into stu values(2,'李四',20)"</span>;</span><br><span class="line">        st=conn.createStatement();</span><br><span class="line">        <span class="keyword">int</span> row=st.executeUpdate(sql);</span><br><span class="line">        System.out.print(row);</span><br><span class="line">    &#125;<span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(st!=<span class="keyword">null</span>) </span><br><span class="line">        &#123;<span class="keyword">try</span> &#123; st.close(); &#125; <span class="keyword">catch</span> (SQLException e) &#123;e.printStackTrace();&#125;&#125;</span><br><span class="line">        <span class="keyword">if</span>(conn!=<span class="keyword">null</span>) </span><br><span class="line">        &#123;<span class="keyword">try</span> &#123; conn.close(); &#125; <span class="keyword">catch</span> (SQLException e) &#123;e.printStackTrace();&#125;&#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</code></pre><h3 id="JDBC执行SQL语句"><a href="#JDBC执行SQL语句" class="headerlink" title="JDBC执行SQL语句"></a>JDBC执行SQL语句</h3><ul>
+<li><p>执行DDL语句,DML语句:使用Statement对象的：int execuUpdate(String sql) 方法<br>该方法执行DML返回受影响的行数，执行DDL返回0；</p>
+</li>
+<li><p>执行DQL语句:使用Statement对象的：ResultSet executeQuery(String sql) 方法,该方法会返回结果集对象。</p>
+<ul>
+<li><p>JDBC的结果集ResultSet类对象：代表从数据库查询的结果，该类的方法：</p>
+<ul>
+<li><p>boolean next() :判断是否有下一行数据，若有则自动移动到下一行，用于遍历结果集</p>
+</li>
+<li><p>getXxxx(Sting 列名)：获取当前行的 指定列名 的数据，其中Xxxx代表该列的数据类型</p>
+</li>
+<li><p>getXxxx(int 列号)：获取当前行的第几列(从1开始)的数据，其中Xxxx代表该列的数据类型<br>当该列数据类型是 varchar/char/text类型时，Xxx代表String，当该列的类型是int/integer时，Xxx代表Int。    </p>
+<pre><code>例：
+</code></pre></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">String sql=<span class="string">"select * from emp"</span>;</span><br><span class="line">ResultSet res=st.executeQuery(sql);</span><br><span class="line"><span class="keyword">while</span>(res.next())</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> empno=res.getInt(<span class="string">"empno"</span>);</span><br><span class="line">    String ename=res.getString(<span class="string">"ename"</span>);</span><br><span class="line">    String job=res.getString(<span class="string">"job"</span>);</span><br><span class="line">    System.out.println(<span class="string">"empno = "</span>+empno+<span class="string">" ename = "</span>+ename+<span class="string">" job = "</span>+job);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre><h3 id="DAO-Data-Access-Object-数据存取对象-设计结束"><a href="#DAO-Data-Access-Object-数据存取对象-设计结束" class="headerlink" title="DAO(Data Access Object,数据存取对象)设计结束"></a>DAO(Data Access Object,数据存取对象)设计结束</h3><ul>
+<li>没有使用DAO存在的问题：当一个程序要去数据库例里查询数据，必须都得自己去加载驱动，连接对象，创建语句,执行语句，释放资源这五个步骤，每个Java程序都这样做，重复代码太多。</li>
+<li>什么是DAO<br>DAO是位于业务逻辑层(java程序)和持久层(数据库)之间的一个抽像层，它是实现对持久层数据的访问。业务逻辑层只需要告诉DAO要对数据做什么，由DAO层来进行具体操作。DAO层自己实现加载驱动，连接对象，创建语句，执行语句，释放资源。然后向业务逻辑层提供增删改查的操作接口和方法，业务逻辑层只需要简单的调用方法即可访问数据库。大大简化了程序编写。降低耦合。<h3 id="ORM-Object-Relation-Mapping-对象关系映射-介绍"><a href="#ORM-Object-Relation-Mapping-对象关系映射-介绍" class="headerlink" title="ORM(Object Relation Mapping,对象关系映射)介绍"></a>ORM(Object Relation Mapping,对象关系映射)介绍</h3></li>
+<li>什么是ORM<pre><code>ORM是一种模型，是一种程序设计技术思想，它将关系数据库中的表的记录映射成对象，将表中每一条记录都变成一个对象，目的是方便开发人员以面向对象的思想来实现对数据库的操作。
+</code></pre></li>
+<li>表和对象的对应关系<pre><code>   类            表
+   对象         记录(行)
+   属性         字段(列)
+例：
+    一个表为：Person(name varchar(25),age int,gender varchar(5))
+    则表对应的类为：
+        class person{        //类名跟表名一样
+            String name;    //属性名和属性类型跟表的字段名和字段属性都得一样。
+            int age;
+            String gender;
+        }
+    表中一条记录对应为一个对象：Person p=new Person();
+</code></pre><h3 id="domain介绍"><a href="#domain介绍" class="headerlink" title="domain介绍"></a>domain介绍</h3></li>
+<li>什么是domain<pre><code>domain就是一个类，人们习惯成为这个名字，该类符合JavaBean的规范。它的作用是作为Java程序和数据库的核心中转站。这个类一般是 ORM 中的类,它其实就是表对应的类,它将数据库中数据，进行封装，并提供get/set供DAO和Java程序进行获取和设置数据。简单说：domain就是将记录中的列设计成属性，并给每个属性设计get/set方法。
+</code></pre></li>
+</ul>
+<h3 id="面向接口编程"><a href="#面向接口编程" class="headerlink" title="面向接口编程"></a>面向接口编程</h3><ul>
+<li><p>为什么要定义接口</p>
+<pre><code>根据客户需求先定义接口,业务具体实现通过实现类来完成,当客户提出新需求,只需要编写该业务逻辑的新实现类即可。
+例：
+    假设客户要求写一个数据库DAO组件，先定义好接口(,连接接口，增删改查方法接口等)，突然根据需要，程序要
+    连接Oracle数据库，而之前只写MySQL数据库，这时只需要多写一个继承同一套接口的实现类即可。
+</code></pre></li>
+<li><p>面向接口编程的好处</p>
+<pre><code>**业务逻辑更加清晰
+**增强代码的扩展性
+**接口与实现相分离，适合团队协作。例如负责界面和后台开发，后台提供一套接口给界面人员使用，具体实现
+  后台去做，界面只管用即可。这样界面开发人员就不用等后台人员写好实现类再去开发界面了。
+**降低耦合度，便于以后升级扩展
+</code></pre><h1 id="DAO组件开发：基于上面三个概念DAO，ORM，domain来设计DAO组件。"><a href="#DAO组件开发：基于上面三个概念DAO，ORM，domain来设计DAO组件。" class="headerlink" title="DAO组件开发：基于上面三个概念DAO，ORM，domain来设计DAO组件。"></a>DAO组件开发：基于上面三个概念DAO，ORM，domain来设计DAO组件。</h1><p>  思想：先根据ORM模型写好domain类，再写好DAO组件</p>
+</li>
+</ul>
+<h3 id="DAO设计规范"><a href="#DAO设计规范" class="headerlink" title="DAO设计规范"></a>DAO设计规范</h3><ul>
+<li>定义DAO接口</li>
+<li>编写对应DAO接口的实现类</li>
+<li>包名规范：包名使用：域名倒写.模块名.组件名<pre><code>DAO包规范：
+    edu.scnu.jdbc.domian     //该包存储所有domian类
+    edu.scnu.jdbc.dao        //该包存储所有dao接口
+    edu.scnu.jdbc.dao.impl   //该包存储所有dao接口的实现类
+    edu.scnu.jdbc.dao.test   //该包存储所有DAO组件的测试类
+</code></pre></li>
+<li>类名规范<ul>
+<li>domain类：类名跟表名一样，且见名知。存储在domain包中，用于描述一个对象，是一个JavaBean。</li>
+<li>dao接口：I+domain类名+Dao，如：IStudentsDao。存储在dao包中，用于表示某一对象的CRUD声明。</li>
+<li>dao实现类：domain类名+Dao+Impl，如：StudentsDaoImpl。存储在dao.impl包中，表示实现DAO接口的实现类</li>
+</ul>
+</li>
+</ul>
+<h3 id="开发步骤"><a href="#开发步骤" class="headerlink" title="开发步骤"></a>开发步骤</h3><ul>
+<li>(1).创建表</li>
+<li>(2).建立domain包和根据ORM模型编写domain类</li>
+<li>(3).建立dao包和根据面向接口编程思想编写dao接口</li>
+<li>(4).建立dao.impl包和dao实现类</li>
+<li>(5).根据dao接口创建dao测试类</li>
+<li>(6).编写实现类当中dao声明的方法体</li>
+<li><p>(7).每编写一个dao方法，进行单元测试，测试功能是否正确</p>
+<ul>
+<li><p>先写好上面的代码，再重构，这些代码，提高精简性，扩展性。</p>
+</li>
+<li><p>重构代码原则：</p>
+<ul>
+<li>同一个类中：在一个类里有多个方法中有较多重复代码时，就把它们抽到一个方法里，这些代码不同的地方通过参数传递进去。</li>
+<li>不同类中：不同类中有较多共同代码时，就抽取到一个新类里，大家再共享该类的内容。    </li>
+</ul>
+</li>
+<li><p>抽取DML语句方法：</p>
+<ul>
+<li><p>设计一个方法，要求传入两个参数，一个是预编译的sql语句，一个是预编译语句的参数，该参数为可变参数。返回受影响行数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int execuUpdate(String sql,Object...params)&#123;.....&#125;</span><br><span class="line">this.execuUpdate(&quot;select * from stu where id=? and name=?&quot;,13,&quot;张三&quot;);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>抽取DQL语句方法：跟DML类似，不过是返回类型和里面的逻辑有差异而已。</p>
+</li>
+<li><p>抽取DQL语句时对结果集的处理<br>  还会用到内省进制：内省就是用于查看和操作JavaBean中的属性。即方便获取JavaBean类的get/set方法。<br>   <strong>怎么使用内省</strong></p>
+<pre><code>使用Java API的几个个类：Introspector类  BeanInfo类
+步骤：
+A.使用Introspector类的一个静态方法 BeanInfo getBeanInfo(Class A,Class B) 获取一个JavaBean类的信息.其中A代表要获取的该类和其父类的信息，B表示如果它是A的父类，就忽略这个父类的信息。
+B.用得到的BeanInfo对象的方法PropertyDescriptor[] getPropertyDescriptors()获取该类的所有属性的属性描述器.
+C.遍历得到的属性描述器数组，并使用属性描述器对象的方法获取该属性的信息;
+        String getName()              //获取该属性的属性名
+        Method getReadMethod()        //获取该属性的get方法
+        Method getWriteMethod()        //获取该属性的set方法
+D.在使用该javaBean类的字节码创建一个该类的对象：类名 obj=类名.class.newInstance();
+E.再用获取到的Method对象和用字节码创建的对象，使用该对象调用该Method代表的方法：Method对象名.invoke(用字节码创建的对象,该方法的实参列)
+例:
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BeanInfo bean=Introspector.getBeanInfo(User.class,Object.class);</span><br><span class="line">PropertyDescriptor[] pds=bean.getPropertyDescriptors();</span><br><span class="line">User u=User.class.newInstance();</span><br><span class="line">pds[<span class="number">0</span>].getReadMethod().invoke(u,<span class="string">"zhangsan"</span>);</span><br></pre></td></tr></table></figure>
+</code></pre><h3 id="3-Statement接口："><a href="#3-Statement接口：" class="headerlink" title="3.Statement接口："></a>3.Statement接口：</h3><ul>
+<li>(1).用于进行Java程序和数据库之间的数据传输。即负责把SQL语句发给数据库的执行程序mysql.exe执行，并获取结果</li>
+<li>(2).该接口有三个具体的子类：<ul>
+<li>Statement：用于对数据库进行通用访问，使用的是静态sql</li>
+<li>PreparedStatement：用于预编译sql模板语句，在运行是接受sql语句参数构成完整的sql语句。</li>
+<li>CallableStatement：使用JDBC调用存储过程。</li>
+</ul>
+</li>
+<li><p>(3).Statement类执行静态sql语句</p>
+<ul>
+<li>先拼接好sql语句</li>
+<li>获取Statement对象，使用连接对象的createConnection()方法</li>
+<li><p>用Statement对象将语句发送给数据库</p>
+<pre><code>例1：执行DML语句
+    String sql = &quot;insert into student(name,age) values(&apos;&quot; +stu.getName + &quot;&apos;,&quot; + stu.getAge +&quot;)&quot;;
+    Stetament st=conn.createStatement();
+    st.execuUpdate(sql);   //记住要传参
+
+例2：执行DQL预编译语句
+    Stetament st = conn.createStatement();
+    String sql = &quot;select * from student&quot;;
+    ResultSet res = st.executeQuery(sql);
+</code></pre></li>
+</ul>
+</li>
+<li><p>(4).使用PreparedStatement类执行预编译语句</p>
+<ul>
+<li>没有预编译语句时，所有sql语句都是静态的，即sql都要拼接，且执行前就要确定。</li>
+<li>有预编译语句，在性能和代码灵活性上有显著提高</li>
+<li>预编译语句更安全，如防止sql注入(就是通过把SQL语句插入到 web表单提交或输入域名或页面请求得查询字符串，最终达到欺骗服务器执行恶意的SQL语句，原理是：使用单引号截断静态sql语句，从而改变语义)。使用预编译语句会将传入的单引号转义，变成 \’ ，这样就无法截断sql语句，进而无法拼接sql语句，从而防止sql注入。</li>
+<li>JDBC执行SQL语句的机制：Java程序通过DriverManager对象注册Connection对象，从而使Java程序连接上数据库系统，之后用连接对象创建Statement对象将sql语句发送给数据库系统，数据库系统拿到sql语句，先进行安全性分析和语法分析(因为DBMS获取的使字符串，要转为sql语句)，然后到预编译语句池里查找该sql语句是否已经存在了，若是，直接执行。若没有就进行编译并保留在预编译池，再给mysql.exe执行。而如果使用预编译语句，PreparedStatement会把该预编译语句和参数一起发送给DBMS，预编译池编译第一次该预编译语句，然后将传来的参数填上，之后再发送该预编译语句，就直接拿存在预编译池的加上新参数即可。而静态sql语句，由于每一次参数不一样，因此每次都得编译。（mysql没有预编译池，故性能上体会不高）。</li>
+<li><p>预编译语句书写：先写好预编译模板SQL语句，其中的参数使用 ？作为占位符，表名该位置可以传参。然后使用setXxx(index,value)方法将实参输入第index位置的占位符中，index从 1 开始。Xxx根据value的类型而定，如value是varchar，Xxx为String。然后使用PreparedStatement对象进行封装，之后使用PreparedStatement类的方法，根据sql语句调用对应方法。</p>
+<pre><code>例1：执行DML预编译语句
+    String sql=&quot;select * from student where id=? and name=?&quot;;
+    PerparedStatement ps=conn.prepareStatement(sql);
+    ps.setInt(1,10);
+    ps.setString(2,&quot;张三&quot;);                
+    ResultSet res=ps.execuQuery();   //记住execuQuery()跟执行静态sql语句不一样，它不需要参数。
+
+例2：执行DQL预编译语句    
+    String sql=&quot;insert into student values(?,?)&quot;;
+    ps.setInt(1,10);
+    ps.setString(2,&quot;张三&quot;);    
+    PerparedStatement ps=conn.prepareStatement(sql);
+    ps.execuUpdate();
+</code></pre></li>
+</ul>
+</li>
+<li><p>(5).CallableStatement类：使用JDBC调用存储过程。<br>  步骤：</p>
+<ul>
+<li>在数据库当中定义一个存储过程</li>
+<li>使用连接对象的方法prepareCall(String sql)获取CallableStatement对象,这里的sql语句也可以使用预编译</li>
+<li>使用得到的CallableStatement对象设置参数</li>
+<li>使用得到的CallableStatement对象的方法executeQuery()方法执行调用存储过程的sql语句，返回一个结果集对象</li>
+<li><p>从结果集对象获取数据<br><strong>注：</strong>这里调用存储过程的sql语句有点不一样，调用存储过程格式：{ call 存储过程名(占位符) }对占位符赋值也有所不同，对于in型参数，使用setXxx(Xxx)方法，而对out型参数，则得这样：</p>
+<pre><code>使用CallableStatement对象的registerOutParameter(index,out型参数的sql类型)，
+
+例1：JDBC调用一个参数的存储过程
+    Connection conn = JDBCUtil.getConn();
+    CallableStatement prepareCall = conn.prepareCall(&quot; { call getStu(?) } &quot;);  //sql语句有点特殊
+    prepareCall.setString(1, &quot;王五&quot;);
+    ResultSet res = prepareCall.executeQuery();
+    if(res.next()) {
+        Student stu=new Student();
+        stu.setId(res.getInt(&quot;id&quot;));
+        stu.setName(res.getString(&quot;name&quot;));
+        stu.setAge(res.getInt(&quot;age&quot;));
+        System.out.println(stu);
+    }
+
+例2：JDBC调用含输入输出参数的存储过程
+    Connection conn = JDBCUtil.getConn();
+    CallableStatement prepareCall = conn.prepareCall(&quot;{call getName(?,?)}&quot;);
+    prepareCall.setInt(1, 6);
+
+    prepareCall.registerOutParameter(2,Types.VARCHAR);  //不一样的地方
+    prepareCall.execute();    //不一样的地方
+
+    String name=prepareCall.getString(2);
+    System.out.println(name);
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<h3 id="4-JDBC处理事务：在Java程序中有些操作要当成一个事务来执行才不会出错。"><a href="#4-JDBC处理事务：在Java程序中有些操作要当成一个事务来执行才不会出错。" class="headerlink" title="4.JDBC处理事务：在Java程序中有些操作要当成一个事务来执行才不会出错。"></a>4.JDBC处理事务：在Java程序中有些操作要当成一个事务来执行才不会出错。</h3><ul>
+<li>默认情况下，事务是自动提交的，因此为了执行自己写事务，要先设置为手动提交。</li>
+<li>MySQL的InnoDB才支持外键和事务，MyISAM不支持外键和事务在写Java代码(或写SQL)时，只要进行 增，删，改才需要设置事务，查询不必设置事务</li>
+<li><p>JDBC处理事务过程</p>
+<ul>
+<li>关闭事务自动提交：使用连接对象关闭：conn.setAutoCommit(false);<br>写上必须当作一个事务来执行的Java代码片段</li>
+<li>该Java代码片段没有异常时，使用连接对象提交事务：conn.commit()</li>
+<li><p>该Java代码片段有异常时，使用连接对象进行回滚：conn.rollback()。回滚之后，事务结束，释放资源。事务的回滚是写在异常处理里面的，当该Java代码片段异常时，若不进行回滚，虽然不会更新数据库，但会占用资源所有出现异常时，要进行回滚。<br>例：</p>
+<pre><code>try
+{
+    //开启事务手动提交
+    conn.setAutoCommit(false);
+
+    //zs账号减少1000
+    sql=&quot;update account set money = money-? where name=?&quot;;
+    ps=conn.prepareStatement(sql);
+    ps.setDouble(1, 1000);
+    ps.setString(2, &quot;zs&quot;);
+    ps.executeUpdate();
+
+    3/0;   //这里出现异常，但由于没有执行到 conn.commit(); ，即事务没提交,之前的数据库操作
+           //并没有执行，因此解决了zs账号少钱了，ls却没增加的情况。
+    //ls账号加1000
+    sql=&quot;update account set money = money+? where name=?&quot;;
+    ps=conn.prepareStatement(sql);
+    ps.setDouble(1, 1000);
+    ps.setString(2, &quot;ls&quot;);
+    ps.executeUpdate();
+
+    //提交事务
+    conn.commit();   //只要事务提交，数据库才执行Java的Statement接口发送过来的sql语句。否则就是Java代码执行了
+                    //只要出现异常，没执行到这行代码，对数据库进行的操作就没用。
+}catch(Exception e){
+    conn.rollback();  //若不回滚事务，会占用着资源。
+}
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<h3 id="5-批处理："><a href="#5-批处理：" class="headerlink" title="5.批处理："></a>5.批处理：</h3><ul>
+<li><p>(1).什么是批处理：一次性执行多条sql语句，允许多条语句一次性提交给数据库批量处理，比单独提交处理效率更高。</p>
+</li>
+<li><p>(2).怎么使用批处理：</p>
+<ul>
+<li>A.将需要批处理的sql语句添加在一起：使用Statement接口的方法：addBatch(String  sql)</li>
+<li><p>B.：使用Statement接口的方法将批处理提交执行：executeBatch()</p>
+<pre><code>例：
+    Connection conn = JDBCUtil.getConn();
+    String sql=&quot;insert into student (name,age) values (?,?)&quot;;
+    PreparedStatement ps = conn.prepareStatement(sql);
+
+    for(int i=0;i&lt;1000;i++)
+    {
+        ps.setString(1,&quot;zhangsan&quot;+i);
+        ps.setInt(2, 18);
+        //如果不用批处理，每循环一次就发送一条sql语句给数据库执行，效率低
+        //ps.executeUpdate();
+        //使用批处理，先加到批处理里，再在循环外一次性提交
+        ps.addBatch();
+    }
+    ps.executeBatch();
+</code></pre></li>
+</ul>
+</li>
+<li><p>(3).注意事项：默认情况下，MySQL是不支持批处理的，从5.1开始，可以在数据库的url里添加一个参数：rewriteBatchedStatements=true来开启批处理。<br>  例：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String url = <span class="string">"jdbc:mysql://localhost:3306/数据库名?rewriteBatchedStatements=true"</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="6-池"><a href="#6-池" class="headerlink" title="6.池"></a>6.池</h3><ul>
+<li>(1).没有连接池的情况<ul>
+<li>每次CRUD操作要使用数据库时，都要创建一个新的连接对象。普通的JDBC数据库连接使用DriverManager来获取而DriverManager每次都要将Connection加载到内存中，并且验证数据库的用户名和密码，而每次CRUD操作执行时，都获得一个连接对象，执行完后又释放断开连接，这样会大大消耗资源和时间。连接对象资源没得到很好的重复利用。</li>
+</ul>
+</li>
+<li>(2).池的介绍<ul>
+<li>什么是池：池就是保存对象的容器，保存的对象叫什么该池就叫什么池</li>
+<li>连接池就是保存数据库连接对象的容器</li>
+<li>连接池的作用：系统启动初始化时，先创建一定数量的对象，需要时直接从池中取出一个空闲对象(没有就等待或新建)，用完后并不直接销毁，而是放回对象池中以便重复利用。</li>
+<li>池的优势就是可以消除对象创建的所带来的延迟，从而提高系统性能。并且可以设置池的大小，控制访问量，还可以通过池的管理机制监视系统的访问数量，使用情况，为系统开发，测试及性能调整提供依据。</li>
+</ul>
+</li>
+<li>(3).池的属性：合理设置池的属性，会提高池的性能<ul>
+<li>初始化连接数：初始化时，池中创建的对象数</li>
+<li>最大连接数：池中最多存储的对象数</li>
+<li>最小连接数：池中最少存储的对象数</li>
+<li>最大空闲时间：应用获取一个池中的对象后，在指定时间内没有任何动作，就会自动释放该对象</li>
+<li>最大等待时间：在指定时间内，一直尝试获取池中对象，超出该时间，就会提示获取失败。</li>
+</ul>
+</li>
+</ul>
+<h3 id="7-连接池的使用"><a href="#7-连接池的使用" class="headerlink" title="7.连接池的使用"></a>7.连接池的使用</h3><ul>
+<li>(1).在Java中提供了一个javax.sql.DataSource接口来表示连接池，DataSource跟JDBC一样，是一个规范，只提供一个接口，具体实现由第三方根据需要实现，只需遵循规范即可。<ul>
+<li>常见的连接池实现<ul>
+<li>DBCP：Spring推荐，Tomcat的数据源就是使用DBCP</li>
+<li>C3P0：它是一个开源代码的JDBC连接池，它和Hibernate一起发表，2007年后就不更新了，性能较差</li>
+<li>Druid：阿里巴巴提供的连接池，除了连接池的功能外，还有更多的功能。国内常用</li>
+<li>DataSource(数据源)和连接池Connection Pool是同一个东西，只是叫法不一样而已。</li>
+</ul>
+</li>
+<li>使用连接池与不使用连接池的区别：<ul>
+<li>获取连接对象方式不同：</li>
+<li>传统：Connection conn=DriverManager.getConnection(url,user,pwd);</li>
+<li>连接池：先用第三方的包获取数据源DataSource对象，在用DataSource对象获取池中的对象：Connection conn=DataSource对象.getConnection();</li>
+<li>释放资源方式不同：</li>
+<li>传统：直接和数据库断开连接，销毁连接对象。使用连接对象的close()方法。</li>
+<li>连接池：把连接对象还给连接池，下一个用户还可以继续使用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>(2).连接池的操作</p>
+<ul>
+<li>主要学习如何创建DataSource对象，再从DataSource对象中获取Connection对象获取连接对象后，其余CRUD等操作跟以前一样(获取Statement对象/PreparedStatement对象，执行SQL语句等)，不同的数据库连接池，在创建DataSource上不一样这些都是第三方提供好的，直接使用即可。</li>
+</ul>
+</li>
+<li><p>(3)DBCP连接池的使用：</p>
+<ul>
+<li><p>获取DataSource对象：(即创建连接池并设置该池的参数，如最大连接数)</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//url的格式是jdbc:mysql://主机名:端口/数据库名</span></span><br><span class="line">String url=<span class="string">"jdbc:mysql://localhost:3306/my_test"</span>;  </span><br><span class="line">String user=<span class="string">"root"</span>;</span><br><span class="line">String password=<span class="string">"1234"</span>;</span><br><span class="line">String driverName=<span class="string">"com.mysql.jdbc.Driver"</span>;</span><br><span class="line"><span class="comment">//创建连接池</span></span><br><span class="line">BasicDataSource ds=<span class="keyword">new</span> BasicDataSource();</span><br><span class="line"><span class="comment">//初始化池</span></span><br><span class="line">ds.setDriverClassName(driverName);</span><br><span class="line">ds.setUsername(user);</span><br><span class="line">ds.setPassword(password);</span><br><span class="line">ds.setUrl(url);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>获取池中的连接对象</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Connection conn=ds.getConnection();				</span><br><span class="line"><span class="comment">//之后的操作跟之前一样</span></span><br><span class="line">String sql=<span class="string">"select * from student where name='李四'"</span>;</span><br><span class="line">Statement st = conn.createStatement();</span><br><span class="line">ResultSet res = st.executeQuery(sql);</span><br><span class="line">conn.close();  <span class="comment">//这时并没有销毁该对象，只是还回池中而已。</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>使用配置文件对连接池进行设置</p>
+</li>
+<li><p>配置文件：是一种资源文件，以.properties为扩展名。配置信息以 键=值 形式存在。在上面使用数据库过程中，我们把数据库的连接地址，用户名，密码都写在代码里，不便于后期维护。因为我们的项目是部署到别人服务器里，别人的数据库连接信息肯定不一样，那部署人员部署项目时要连接数据库只能去该你写的Java代码，到他们不一定知道你怎么写的，因此为了安全和便利，专门提供一个配置文件，部署人员只需在配置文件上改就可以了。</p>
+</li>
+<li><p>读取配置文件（先创建一个 source folder文件夹，然后创建一个.properties文件并输入信息）</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建配置文件对象</span></span><br><span class="line">Properties p=<span class="keyword">new</span> Properties();</span><br><span class="line"><span class="comment">//读取文件</span></span><br><span class="line">InputStream in=<span class="keyword">new</span> FileInputStream(<span class="string">"src/db.properties"</span>);</span><br><span class="line"><span class="comment">//加载配置文件</span></span><br><span class="line">p.load(in);</span><br><span class="line"><span class="comment">//根据键名获取配置信息</span></span><br><span class="line">p.getProperty(<span class="string">"键名"</span>);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li>连接池读取配置文件来设置数据源(连接池)<br>   例：</li>
+</ul>
+<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Properties properties=<span class="keyword">new</span> Properties();</span><br><span class="line">InputStream in = <span class="keyword">new</span> FileInputStream(<span class="string">"resource/db.properties"</span>);</span><br><span class="line">properties.load(in);</span><br><span class="line">DataSource ds=<span class="keyword">null</span>;</span><br><span class="line"><span class="comment">//直接将配置文件给数据源即可,它会自动读取并设置</span></span><br><span class="line">ds=BasicDataSourceFactory.createDataSource(properties);</span><br></pre></td></tr></table></figure>
+
+**注：使用DBCP来加载配置文件，配置文件的键名就有了规定，要按要求。不按要求会出错.**
+</code></pre><ul>
+<li><p>(4).Druid(德鲁伊)连接池的使用</p>
+<ul>
+<li>Druid是一个JDBC组件库，不仅包含数据库连接池，还有SQLParser等组件。DruidDataSource是最好的数据库连接池，DruidDataSource的配置是兼容DBCP的，因此从DBCP迁移到DruidDataSource，只需需改数据库实现类即可。只需要将DBCP的代码中的 BasicDataSourceFactory 改为 DruidDataSourceFactory 即可。这样就迁移了。</li>
+<li><p>DruidDataSource的使用<br>  例：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Properties properties=<span class="keyword">new</span> Properties();</span><br><span class="line">InputStream in = <span class="keyword">new</span> FileInputStream(<span class="string">"resource/db.properties"</span>);</span><br><span class="line">properties.load(in);	<span class="comment">//直接将配置文件传给数据源就可以，它会自动读取并设置</span></span><br><span class="line"><span class="comment">//DBCP和Druid就这句不一样而已</span></span><br><span class="line">DataSource ds=DruidDataSourceFactory.createDataSource(properties);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="三-其他"><a href="#三-其他" class="headerlink" title="三.其他"></a>三.其他</h1><h3 id="1-存储图片"><a href="#1-存储图片" class="headerlink" title="1.存储图片"></a>1.存储图片</h3><ul>
+<li>(1).数据库中可以直接存储图片的，将图片转为二进制即可。使用数据库中的数据类型：BLOB类型。它将图片，音频，视频转为二进制流之后就可以直接存储到数据库里了。<ul>
+<li>BLOB类型：<ul>
+<li>TINYBLOB：255字节</li>
+<li>BLOB：65535zijie</li>
+<li>MEDIUMBLOB：16M</li>
+<li>LONGBLOB：4G<br>实际上，真正的开发中，不会直接将多媒体存放到数据库里的，而是把多媒体文件的路径保存到数据库里，以后再取出该路径，根据该路径到那里拿。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>(2).存储图片的操作</p>
+<ul>
+<li><p>在表里添加一个字段，该字段类型为BOLB类型</p>
+</li>
+<li><p>通过Java代码存入一张图片：setBlob(index,InputStream)</p>
+</li>
+<li><p>从数据库里取出图片：  InputStream in = res.getBlob(“image”).getBinaryStream();<br>例1：存入一张图片到数据库</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Connection conn = JDBCUtil.getConn();</span><br><span class="line">String sql=<span class="string">"insert into media (image) values (?)"</span>;</span><br><span class="line">PreparedStatement ps = conn.prepareStatement(sql);</span><br><span class="line">ps.setBlob(<span class="number">1</span>,<span class="keyword">new</span> FileInputStream(<span class="string">"d://1.jpg"</span>));  <span class="comment">//直接将图片路径			</span></span><br><span class="line">ps.execuUpdate();</span><br></pre></td></tr></table></figure>
+<p>例2：从数据库里取出图片</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">String sql=<span class="string">"select * from media where name=?"</span>;</span><br><span class="line">PreparedStatement ps = conn.prepareStatement(sql);</span><br><span class="line">ps.setString(<span class="number">1</span>, <span class="string">"美女"</span>);</span><br><span class="line">ResultSet res=ps.executeQuery();</span><br><span class="line"><span class="keyword">if</span>(res.next()) &#123;</span><br><span class="line">	<span class="comment">//获取图片</span></span><br><span class="line">	Blob blob=res.getBlob(<span class="string">"image"</span>);</span><br><span class="line">	<span class="comment">//获取图片的二进制流</span></span><br><span class="line">	InputStream input=blob.getBinaryStream();	</span><br><span class="line">	Files.copy(input, Paths.get(<span class="string">"d:/美女复件"</span>));  <span class="comment">//将文件复制一份</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-获取自动生成主键"><a href="#2-获取自动生成主键" class="headerlink" title="2.获取自动生成主键"></a>2.获取自动生成主键</h3><p>在我们设置表时，会设置主键并设置自动增长，但我们用JDBC插入数据时，要想知道我们生成的主键是多少。<br>需求场景：用户注册时，添加用户名，密码后，点击注册，这时服务器后台将注册信息插入数据库，并跳转到完善个人信息的页面，用户填完这个后，提交到服务器里，这时服务器后台要将这些数据更新到刚刚插入的那条记录里，因此要获取刚刚插入的那条记录的主键，再根据主键更新数据。</p>
+<ul>
+<li><p>(1).获取方法</p>
+<ul>
+<li><p>设置可以获取主键<br>​静态语句：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Connection conn = JDBCUtil.getConn();</span><br><span class="line">String sql=<span class="string">"insert into student (name,age) values ('zs',29)"</span>;</span><br><span class="line">Statement st = conn.createStatement();</span><br><span class="line"><span class="comment">//设置可以获取主键</span></span><br><span class="line">st.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);</span><br><span class="line"><span class="comment">//获取主键</span></span><br><span class="line">ResultSet res=st.getGeneratedKeys();</span><br><span class="line"><span class="keyword">if</span>(res.next()) &#123;</span><br><span class="line">    <span class="keyword">int</span> id=res.getInt(<span class="number">1</span>);</span><br><span class="line">    System.out.println(id);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>预编译语句：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Connection conn = JDBCUtil.getConn();</span><br><span class="line">String sql=<span class="string">"insert into student (name,age) values (?,?)"</span>;</span><br><span class="line"><span class="comment">//预编译语句设置可以获取主键</span></span><br><span class="line">PreparedStatement ps = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);</span><br><span class="line">ps.setString(<span class="number">1</span>, <span class="string">"lisi"</span>);</span><br><span class="line">ps.setInt(<span class="number">2</span>, <span class="number">99</span>);</span><br><span class="line">ps.executeUpdate();</span><br><span class="line"><span class="comment">//获取主键</span></span><br><span class="line">ResultSet res=st.getGeneratedKeys();</span><br><span class="line"><span class="keyword">if</span>(res.next()) &#123;</span><br><span class="line">    <span class="keyword">int</span> id=res.getInt(<span class="number">1</span>);</span><br><span class="line">    System.out.println(id);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取主键<br>无论是静态sql语句，还是预编译语句。都使用Statement对象的方法：ResultSet getGenerateKeys()<br>​例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ResultSet res=st.getGenerateKeys();</span><br><span class="line"><span class="keyword">if</span>(res.next())</span><br><span class="line"><span class="keyword">int</span> id=res.getInt(<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-DBUtils的使用：DBUtils是一个Apache开发的一个框架，它封装JDBC的一些常用操作，可以很方便的操作数据库"><a href="#3-DBUtils的使用：DBUtils是一个Apache开发的一个框架，它封装JDBC的一些常用操作，可以很方便的操作数据库" class="headerlink" title="3.DBUtils的使用：DBUtils是一个Apache开发的一个框架，它封装JDBC的一些常用操作，可以很方便的操作数据库"></a>3.DBUtils的使用：DBUtils是一个Apache开发的一个框架，它封装JDBC的一些常用操作，可以很方便的操作数据库</h3><ul>
+<li><p>使用步骤：</p>
+<ul>
+<li><p>(1).获取QueryRunner对象,传一个数据源给该对象，它会自动从连接池里获取对象，并提供一些简便操作</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">QueryRunner qr=<span class="keyword">new</span> QueryRunner(DataSource ds);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>(2).写好预编译语句或静态语句。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String sql=<span class="string">"select * from stu where id=?"</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>(3).使用QueryRunner对象执行sql语句</p>
+<ul>
+<li><p>DML/DDL语句：update(String sql,Object…params)<br>​例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qr.update(sql,&quot;张三&quot;,18,&quot;男&quot;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>DQL语句：query(String sql,ResultSetHandler<t> rs,Object…params),其中ResultSetHandler是结果集处理器，ResultSetHandler类根据内省来从结果集里取出值封装到对象里。ResultSetHandler类有BeanHandler<t>(Class c)，BeanListHandler<t>(Class c),MapListHandler<t>(Class c)，等子类。例：</t></t></t></t></p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">qr.query(sql, <span class="keyword">new</span> BeanHandler&lt;person&gt;(person.class), <span class="string">"张三"</span>,<span class="number">18</span>,<span class="string">"男"</span>);</span><br><span class="line"><span class="comment">//将查询结果封装成一个指定对象的列表</span></span><br><span class="line">qr.query(sql, <span class="keyword">new</span> BeanListHandler&lt;person&gt;(person.class), <span class="number">4</span>);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+    <div>
+        
+          <div>
+            <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+          </div>
+        
+    </div>
+    
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据库/" rel="tag"><i class="fa fa-tag"></i> 数据库</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/23/Linux学习笔记/" rel="next" title="Linux学习笔记">
+                <i class="fa fa-chevron-left"></i> Linux学习笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/head.jpeg" alt="金名海">
+            
+              <p class="site-author-name" itemprop="name">金名海</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenminghai" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:chenminghai666@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                推荐阅读
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://github.com/frank-lam/fullstack-tutorial" title="全栈面试" target="_blank">全栈面试</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.cnblogs.com/csguo/category/1076005.html" title="网络安全" target="_blank">网络安全</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.runoob.com/vue2/vue-directory-structure.html" title="Vue入门" target="_blank">Vue入门</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.alloyteam.com/nav/" title="Web前端导航" target="_blank">Web前端导航</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://course.fast.ai/" title="机器学习入门" target="_blank">机器学习入门</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JDBC基础知识"><span class="nav-number">1.</span> <span class="nav-text">JDBC基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是JDBC"><span class="nav-number">1.0.1.</span> <span class="nav-text">什么是JDBC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JDBC的机制：通过驱动包连接数据库，使用JDBC的API操作驱动包从而操作具体数据库"><span class="nav-number">1.0.2.</span> <span class="nav-text">JDBC的机制：通过驱动包连接数据库，使用JDBC的API操作驱动包从而操作具体数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接MySQL"><span class="nav-number">1.0.3.</span> <span class="nav-text">连接MySQL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JDBC执行SQL语句"><span class="nav-number">1.0.4.</span> <span class="nav-text">JDBC执行SQL语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DAO-Data-Access-Object-数据存取对象-设计结束"><span class="nav-number">1.0.5.</span> <span class="nav-text">DAO(Data Access Object,数据存取对象)设计结束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ORM-Object-Relation-Mapping-对象关系映射-介绍"><span class="nav-number">1.0.6.</span> <span class="nav-text">ORM(Object Relation Mapping,对象关系映射)介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#domain介绍"><span class="nav-number">1.0.7.</span> <span class="nav-text">domain介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#面向接口编程"><span class="nav-number">1.0.8.</span> <span class="nav-text">面向接口编程</span></a></li></ol></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#DAO组件开发：基于上面三个概念DAO，ORM，domain来设计DAO组件。"><span class="nav-number">2.</span> <span class="nav-text">DAO组件开发：基于上面三个概念DAO，ORM，domain来设计DAO组件。</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DAO设计规范"><span class="nav-number">2.0.1.</span> <span class="nav-text">DAO设计规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开发步骤"><span class="nav-number">2.0.2.</span> <span class="nav-text">开发步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Statement接口："><span class="nav-number">2.0.3.</span> <span class="nav-text">3.Statement接口：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-JDBC处理事务：在Java程序中有些操作要当成一个事务来执行才不会出错。"><span class="nav-number">2.0.4.</span> <span class="nav-text">4.JDBC处理事务：在Java程序中有些操作要当成一个事务来执行才不会出错。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-批处理："><span class="nav-number">2.0.5.</span> <span class="nav-text">5.批处理：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-池"><span class="nav-number">2.0.6.</span> <span class="nav-text">6.池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-连接池的使用"><span class="nav-number">2.0.7.</span> <span class="nav-text">7.连接池的使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三-其他"><span class="nav-number">3.</span> <span class="nav-text">三.其他</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-存储图片"><span class="nav-number">3.0.1.</span> <span class="nav-text">1.存储图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-获取自动生成主键"><span class="nav-number">3.0.2.</span> <span class="nav-text">2.获取自动生成主键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-DBUtils的使用：DBUtils是一个Apache开发的一个框架，它封装JDBC的一些常用操作，可以很方便的操作数据库"><span class="nav-number">3.0.3.</span> <span class="nav-text">3.DBUtils的使用：DBUtils是一个Apache开发的一个框架，它封装JDBC的一些常用操作，可以很方便的操作数据库</span></a></li></ol></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="powered-by">
+<i class="fa fa-user-md"></i>
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+</div>
+<div class="theme-info">
+  <span class="post-count">博客总字数:12.4k</span>
+</div>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">金名海</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'Tx0NX8HazdCyhtFtVuTqrsaP-gzGzoHsz',
+        appKey: 'vTvbXr0TLTso13Gzv2MESlxB',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("Tx0NX8HazdCyhtFtVuTqrsaP-gzGzoHsz", "vTvbXr0TLTso13Gzv2MESlxB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;"></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+  
+</body>
+</html>
